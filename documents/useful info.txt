@@ -1,0 +1,15 @@
+- load balancer tutorial: https://www.richardnichols.net/2010/08/5-minute-guide-clustering-apache-tomcat/
+- another tutorial on load balancing: https://pubs.vmware.com/vfabric5/index.jsp?topic=/com.vmware.vfabric.web-server.5.0/web-server/config-load-balancing.html
+
+- monitor the load balancer and the cluster nodes at http://localhost/balancer-manager
+- check the remote cluster node (node3) by accessing: http://192.168.0.102:8080/ScrumTaskboard/
+
+- JMeter tutorial: https://www.youtube.com/watch?v=cv7KqxaLZd8
+- JMeter Performance Monitoring plugins tutorials: 
+			http://jmeter-plugins.org/wiki/PerfMonMetrics/
+			http://jmeter-plugins.org/wiki/PerfMonAgent/
+			https://knowledgeworldforyou.wordpress.com/2015/01/23/jmeter-performance-of-cpu-and-memory-usage-using-perfmon-plugin/
+			https://www.stevefenton.co.uk/2014/12/really-useful-jmeter-plugins-perfmon-metrics/
+			https://books.google.ro/books?id=6ditCAAAQBAJ&pg=PA83&lpg=PA83&dq=jmeter+configure+server+agent+port+for+localhost+application&source=bl&ots=OkHl6JLI06&sig=Wje-rZg8QhXqsLXExZkyPexwNaI&hl=en&sa=X&ved=0ahUKEwiHiNLRqIbKAhXGWxQKHXOnAX4Q6AEIRDAG#v=onepage&q=jmeter%20configure%20server%20agent%20port%20for%20localhost%20application&f=false
+			http://www.testautomationguru.com/jmeter-server-performance-metrics-collector/
+			
