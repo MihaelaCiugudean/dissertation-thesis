@@ -4,6 +4,7 @@
 - monitor the load balancer and the cluster nodes at http://localhost/balancer-manager
 - check the remote cluster node (node3) by accessing: http://192.168.0.102:8080/ScrumTaskboard/
 
+
 - JMeter tutorial: https://www.youtube.com/watch?v=cv7KqxaLZd8
 - JMeter Performance Monitoring plugins tutorials: 
 			http://jmeter-plugins.org/wiki/PerfMonMetrics/
