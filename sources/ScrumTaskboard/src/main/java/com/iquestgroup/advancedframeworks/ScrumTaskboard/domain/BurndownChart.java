@@ -33,7 +33,7 @@ public class BurndownChart {
 	
 	
 	public BurndownChart(float storyPointsNumber, int sprintDaysNumber) {
-		 this.storyPointsNumber = storyPointsNumber;
+	    this.storyPointsNumber = storyPointsNumber;
 		this.sprintDaysNumber = sprintDaysNumber;
 	}
 	
