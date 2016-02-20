@@ -71,7 +71,6 @@ public class TaskboardController {
 		taskService.create(newTask);
 		
 		populateModelWithTasks(model);
-
 		return "showTaskboardForScrumMaster";
 	}
 	
@@ -89,11 +88,9 @@ public class TaskboardController {
 	@RequestMapping(value = "/deleteTask", method = RequestMethod.POST)
 	public String processDelete(@ModelAttribute("taskToDelete") Task taskToDelete,BindingResult result, Map<String, List<Task>> model) {
 		taskToDelete = (Task) model.get("taskToDelete");
-		
 		taskService.delete(taskToDelete.getId());
 		
 		populateModelWithTasks(model);
-
 		return "showTaskboardForScrumMaster";
 	}
 	
@@ -140,7 +137,6 @@ public class TaskboardController {
 	@RequestMapping(value = "/moveTaskFromTakenToInProgress", method = RequestMethod.POST)
 	public String processMoveFromTakenToInProgress(@ModelAttribute("taskToMove") Task taskToMove,BindingResult result, Map<String, List<Task>> model) {
 		taskToMove = (Task) model.get("taskToMove");
-		
 		taskService.moveTaskToPanel(taskToMove,"in progress");
 		
 		populateModelWithTasks(model);
@@ -168,7 +164,6 @@ public class TaskboardController {
 	@RequestMapping(value = "/moveTaskFromInProgressToInReview", method = RequestMethod.POST)
 	public String processMoveFromInProgressToInReview(@ModelAttribute("taskToMove") Task taskToMove,BindingResult result, Map<String, List<Task>> model) {
 		taskToMove = (Task) model.get("taskToMove");
-		
 		taskService.moveTaskToPanel(taskToMove,"in review");
 		
 		populateModelWithTasks(model);
@@ -246,7 +241,6 @@ public class TaskboardController {
 		taskToMove = (Task) model.get("taskToMove");
 		
 		User foundUser = userService.findByUsernameAndPassword(loginForm.getUsername(), loginForm.getPassword());
-	
 		taskService.moveTaskToTaken(taskToMove, foundUser.getId());
 	
 		populateModelWithTasks(model);
@@ -302,7 +296,6 @@ public class TaskboardController {
 	@RequestMapping(value = "/moveTaskFromInProgressToTaken", method = RequestMethod.POST)
 	public String processMoveFromInProgressToTaken(@ModelAttribute("taskToMove") Task taskToMove,BindingResult result, Map<String, List<Task>> model) {
 		taskToMove = (Task) model.get("taskToMove");
-		
 		taskService.moveTaskToPanel(taskToMove, "taken");
 	
 		populateModelWithTasks(model);
@@ -330,7 +323,6 @@ public class TaskboardController {
 	@RequestMapping(value = "/moveTaskFromInReviewToInProgressByDeveloper", method = RequestMethod.POST)
 	public String processMoveFromInReviewToInProgressByDeveloper(@ModelAttribute("taskToMove") Task taskToMove,BindingResult result, Map<String, List<Task>> model) {
 		taskToMove = (Task) model.get("taskToMove");
-		
 		taskService.moveTaskToPanel(taskToMove,"in progress");
 		
 		populateModelWithTasks(model);
@@ -366,7 +358,6 @@ public class TaskboardController {
 	@RequestMapping(value = "/showMenu", method = RequestMethod.GET)
 	public String showMenu(Map<String, Object> model,@ModelAttribute("loginForm") User loginForm) {
 		loginForm = (User) model.get("loginForm");
-		
 		User foundUser = userService.findByUsernameAndPassword(loginForm.getUsername(), loginForm.getPassword());
 		
 		if(foundUser.getPosition().equals("developer")) return "loginDeveloper";

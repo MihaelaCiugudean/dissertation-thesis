@@ -115,7 +115,6 @@ public class MetaTagController {
 		Developer suggestedDeveloper = metaTagService.getSuggestedDeveloperForTask(selectedTask);
 		model.put("suggestedDeveloper", suggestedDeveloper);
 		
-		
 		return "suggestDeveloperForTask";
 	}
 }
