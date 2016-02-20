@@ -78,16 +78,18 @@ public class MetaTagController {
 		selectedSkillItem = (SkillItem) model.get("selectedSkillItem");
 		selectedSkillItem = skillItemService.findById(selectedSkillItem.getId());
 		
-		if(metaTagService.findByNameAndTask(selectedSkillItem.getSkillName(), selectedTask.getId()) ==null) {
+		String selectedSkillName = selectedSkillItem.getSkillName();
+		if (metaTagService.findByNameAndTask(selectedSkillName, selectedTask.getId()) == null) {
 			MetaTag newMetatag = new MetaTag();
 			List<MetaTag> existentTags = metaTagService.findAll();
-			if(existentTags.size()>0) {
-			MetaTag lastInsertedTag = existentTags.get(existentTags.size()-1);
-			newMetatag.setId(lastInsertedTag.getId()+1);
+			if (existentTags.size() > 0) {
+				MetaTag lastInsertedTag = existentTags.get(existentTags.size() - 1);
+				newMetatag.setId(lastInsertedTag.getId() + 1);
+			} else {
+				newMetatag.setId(1);
 			}
-			else newMetatag.setId(1);
-			
-			newMetatag.setMetaTagName(selectedSkillItem.getSkillName());
+				
+			newMetatag.setMetaTagName(selectedSkillName);
 			newMetatag.setTask(selectedTask);
 			metaTagService.create(newMetatag);
 		}
@@ -112,7 +114,6 @@ public class MetaTagController {
 		
 		Developer suggestedDeveloper = metaTagService.getSuggestedDeveloperForTask(selectedTask);
 		model.put("suggestedDeveloper", suggestedDeveloper);
-		
 		
 		return "suggestDeveloperForTask";
 	}
