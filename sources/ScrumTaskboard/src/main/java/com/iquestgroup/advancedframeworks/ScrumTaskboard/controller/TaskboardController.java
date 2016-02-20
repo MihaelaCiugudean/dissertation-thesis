@@ -37,13 +37,10 @@ public class TaskboardController {
 	
 	@RequestMapping(value = "/showTaskboardForDeveloper", method = RequestMethod.GET)
 	public String showTaskboardForDeveloper(Map<String, List<Task>> model) {
-		model.put("tasksNotTaken", getTasksNotTakenAndSuggestedDeveloper());
-		model.put("tasksTaken", taskService.findAllFromPanel("taken"));
-		model.put("tasksInProgress", taskService.findAllFromPanel("in progress"));
-		model.put("tasksInReview", taskService.findAllFromPanel("in review"));
-		model.put("tasksInDone", taskService.findAllFromPanel("in done"));
+		populateModelWithTasks(model);
 		return "showTaskboardForDeveloper";
 	}
+
 
 	
 	@RequestMapping(value = "/showTaskboardForScrumMaster", method = RequestMethod.GET)
@@ -54,11 +51,7 @@ public class TaskboardController {
 			tasksNotTaken.get(i).setDeveloper(developer);
 		}
 		
-		model.put("tasksNotTaken", getTasksNotTakenAndSuggestedDeveloper());
-		model.put("tasksTaken", taskService.findAllFromPanel("taken"));
-		model.put("tasksInProgress", taskService.findAllFromPanel("in progress"));
-		model.put("tasksInReview", taskService.findAllFromPanel("in review"));
-		model.put("tasksInDone", taskService.findAllFromPanel("in done"));
+		populateModelWithTasks(model);
 		return "showTaskboardForScrumMaster";
 	}
 
@@ -77,11 +70,7 @@ public class TaskboardController {
 		newTask.setStatus("not taken");
 		taskService.create(newTask);
 		
-		model.put("tasksNotTaken", taskService.findAllFromPanel("not taken"));
-		model.put("tasksTaken", taskService.findAllFromPanel("taken"));
-		model.put("tasksInProgress", taskService.findAllFromPanel("in progress"));
-		model.put("tasksInReview", taskService.findAllFromPanel("in review"));
-		model.put("tasksInDone", taskService.findAllFromPanel("in done"));
+		populateModelWithTasks(model);
 
 		return "showTaskboardForScrumMaster";
 	}
@@ -103,11 +92,7 @@ public class TaskboardController {
 		
 		taskService.delete(taskToDelete.getId());
 		
-		model.put("tasksNotTaken", taskService.findAllFromPanel("not taken"));
-		model.put("tasksTaken", taskService.findAllFromPanel("taken"));
-		model.put("tasksInProgress", taskService.findAllFromPanel("in progress"));
-		model.put("tasksInReview", taskService.findAllFromPanel("in review"));
-		model.put("tasksInDone", taskService.findAllFromPanel("in done"));
+		populateModelWithTasks(model);
 
 		return "showTaskboardForScrumMaster";
 	}
@@ -129,11 +114,7 @@ public class TaskboardController {
 		foundedTask.setDifficulty(taskToEdit.getDifficulty());
 		taskService.update(foundedTask);
 		
-		model.put("tasksNotTaken", taskService.findAllFromPanel("not taken"));
-		model.put("tasksTaken", taskService.findAllFromPanel("taken"));
-		model.put("tasksInProgress", taskService.findAllFromPanel("in progress"));
-		model.put("tasksInReview", taskService.findAllFromPanel("in review"));
-		model.put("tasksInDone", taskService.findAllFromPanel("in done"));
+		populateModelWithTasks(model);
 
 		return "showTaskboardForScrumMaster";
 	}
@@ -162,11 +143,7 @@ public class TaskboardController {
 		
 		taskService.moveTaskToPanel(taskToMove,"in progress");
 		
-		model.put("tasksNotTaken", getTasksNotTakenAndSuggestedDeveloper());
-		model.put("tasksTaken", taskService.findAllFromPanel("taken"));
-		model.put("tasksInProgress", taskService.findAllFromPanel("in progress"));
-		model.put("tasksInReview", taskService.findAllFromPanel("in review"));
-		model.put("tasksInDone", taskService.findAllFromPanel("in done"));
+		populateModelWithTasks(model);
 		return "showTaskboardForDeveloper";
 	}
 	
@@ -194,11 +171,7 @@ public class TaskboardController {
 		
 		taskService.moveTaskToPanel(taskToMove,"in review");
 		
-		model.put("tasksNotTaken", getTasksNotTakenAndSuggestedDeveloper());
-		model.put("tasksTaken", taskService.findAllFromPanel("taken"));
-		model.put("tasksInProgress", taskService.findAllFromPanel("in progress"));
-		model.put("tasksInReview", taskService.findAllFromPanel("in review"));
-		model.put("tasksInDone", taskService.findAllFromPanel("in done"));
+		populateModelWithTasks(model);
 		return "showTaskboardForDeveloper";
 	}
 	
@@ -276,11 +249,7 @@ public class TaskboardController {
 	
 		taskService.moveTaskToTaken(taskToMove, foundUser.getId());
 	
-		model.put("tasksNotTaken", getTasksNotTakenAndSuggestedDeveloper());
-		model.put("tasksTaken", taskService.findAllFromPanel("taken"));
-		model.put("tasksInProgress", taskService.findAllFromPanel("in progress"));
-		model.put("tasksInReview", taskService.findAllFromPanel("in review"));
-		model.put("tasksInDone", taskService.findAllFromPanel("in done"));
+		populateModelWithTasks(model);
 		return "showTaskboardForDeveloper";
 	}
 	
@@ -308,11 +277,7 @@ public class TaskboardController {
 		
 		taskService.moveTaskToPanel(taskToMove,"not taken");
 		
-		model.put("tasksNotTaken", getTasksNotTakenAndSuggestedDeveloper());
-		model.put("tasksTaken", taskService.findAllFromPanel("taken"));
-		model.put("tasksInProgress", taskService.findAllFromPanel("in progress"));
-		model.put("tasksInReview", taskService.findAllFromPanel("in review"));
-		model.put("tasksInDone", taskService.findAllFromPanel("in done"));
+		populateModelWithTasks(model);
 		return "showTaskboardForDeveloper";
 	}
 	
@@ -340,11 +305,7 @@ public class TaskboardController {
 		
 		taskService.moveTaskToPanel(taskToMove, "taken");
 	
-		model.put("tasksNotTaken", getTasksNotTakenAndSuggestedDeveloper());
-		model.put("tasksTaken", taskService.findAllFromPanel("taken"));
-		model.put("tasksInProgress", taskService.findAllFromPanel("in progress"));
-		model.put("tasksInReview", taskService.findAllFromPanel("in review"));
-		model.put("tasksInDone", taskService.findAllFromPanel("in done"));
+		populateModelWithTasks(model);
 		return "showTaskboardForDeveloper";
 	}
 	
@@ -372,11 +333,7 @@ public class TaskboardController {
 		
 		taskService.moveTaskToPanel(taskToMove,"in progress");
 		
-		model.put("tasksNotTaken", getTasksNotTakenAndSuggestedDeveloper());
-		model.put("tasksTaken", taskService.findAllFromPanel("taken"));
-		model.put("tasksInProgress", taskService.findAllFromPanel("in progress"));
-		model.put("tasksInReview", taskService.findAllFromPanel("in review"));
-		model.put("tasksInDone", taskService.findAllFromPanel("in done"));
+		populateModelWithTasks(model);
 		return "showTaskboardForDeveloper";
 	}
 	
@@ -401,11 +358,7 @@ public class TaskboardController {
 		
 		taskService.moveTaskToPanel(taskToMove,"in progress");
 		
-		model.put("tasksNotTaken", getTasksNotTakenAndSuggestedDeveloper());
-		model.put("tasksTaken", taskService.findAllFromPanel("taken"));
-		model.put("tasksInProgress", taskService.findAllFromPanel("in progress"));
-		model.put("tasksInReview", taskService.findAllFromPanel("in review"));
-		model.put("tasksInDone", taskService.findAllFromPanel("in done"));
+		populateModelWithTasks(model);
 		return "showTaskboardForScrumMaster";
 	}
 
@@ -432,6 +385,14 @@ public class TaskboardController {
 		return tasksNotTaken;
 	}
 	
+	
+	private void populateModelWithTasks(Map<String, List<Task>> model) {
+		model.put("tasksNotTaken", getTasksNotTakenAndSuggestedDeveloper());
+		model.put("tasksTaken", taskService.findAllFromPanel("taken"));
+		model.put("tasksInProgress", taskService.findAllFromPanel("in progress"));
+		model.put("tasksInReview", taskService.findAllFromPanel("in review"));
+		model.put("tasksInDone", taskService.findAllFromPanel("in done"));
+	}
 	
 	public TaskService getTaskService() {
 		return taskService;

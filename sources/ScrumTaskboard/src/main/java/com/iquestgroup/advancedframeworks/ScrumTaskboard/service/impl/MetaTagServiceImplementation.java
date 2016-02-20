@@ -134,8 +134,8 @@ public class MetaTagServiceImplementation implements MetaTagService{
 				}
 			}
 			
-			if(developerDao.findAll() != null) {
-				ArrayList<Developer> developers = (ArrayList<Developer>) developerDao.findAll();
+			List<Developer> developers = developerDao.findAll();
+			if(developers != null) {
 				double maxCompatibility = 0;
 				suggestedDeveloper = developers.get(0);
 				for(int j=0;j<developers.size();j++) {
@@ -180,10 +180,11 @@ public class MetaTagServiceImplementation implements MetaTagService{
 	
 	private int getWorkingHoursForADeveloper(Developer developer) {
 		ArrayList<Task> takenTasks = new ArrayList<Task>();
-		 ArrayList<Task> inProgressTasks = new ArrayList<Task>();
+		ArrayList<Task> inProgressTasks = new ArrayList<Task>();
 		try {
-			takenTasks = (ArrayList<Task>) taskDao.findAllFromPanelForDeveloper("taken", developer.getId());
-			inProgressTasks = (ArrayList<Task>) taskDao.findAllFromPanelForDeveloper("in progress", developer.getId());
+			int developerId = developer.getId();
+			takenTasks = (ArrayList<Task>) taskDao.findAllFromPanelForDeveloper("taken", developerId);
+			inProgressTasks = (ArrayList<Task>) taskDao.findAllFromPanelForDeveloper("in progress", developerId);
 		} catch (SQLException e) {
 			logger.warn("Unable to get the number of working hours for the specified developer !", e);
 			e.printStackTrace();
