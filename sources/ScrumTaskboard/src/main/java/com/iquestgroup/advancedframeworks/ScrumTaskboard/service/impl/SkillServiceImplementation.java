@@ -13,12 +13,16 @@ import org.springframework.stereotype.Service;
 import com.iquestgroup.advancedframeworks.ScrumTaskboard.domain.Developer;
 import com.iquestgroup.advancedframeworks.ScrumTaskboard.domain.MetaTag;
 import com.iquestgroup.advancedframeworks.ScrumTaskboard.domain.Skill;
+import com.iquestgroup.advancedframeworks.ScrumTaskboard.domain.SkillItem;
 import com.iquestgroup.advancedframeworks.ScrumTaskboard.domain.SkillPercentage;
 import com.iquestgroup.advancedframeworks.ScrumTaskboard.domain.SkillUpgrades;
 import com.iquestgroup.advancedframeworks.ScrumTaskboard.domain.Task;
 import com.iquestgroup.advancedframeworks.ScrumTaskboard.persistence.DeveloperDao;
 import com.iquestgroup.advancedframeworks.ScrumTaskboard.persistence.SkillDao;
+import com.iquestgroup.advancedframeworks.ScrumTaskboard.service.MetaTagService;
+import com.iquestgroup.advancedframeworks.ScrumTaskboard.service.SkillItemService;
 import com.iquestgroup.advancedframeworks.ScrumTaskboard.service.SkillService;
+import com.iquestgroup.advancedframeworks.ScrumTaskboard.service.TaskService;
 
 @Service("skillService")
 public class SkillServiceImplementation implements SkillService{
@@ -27,6 +31,15 @@ public class SkillServiceImplementation implements SkillService{
 	
 	@Autowired
 	private DeveloperDao developerDao;
+	
+	@Autowired
+	private SkillItemService skillItemService;
+	
+	@Autowired
+	private TaskService taskService;
+	
+	@Autowired
+	private MetaTagService metaTagService;
 	
 	private Logger logger = Logger.getLogger(SkillServiceImplementation.class
 			.getName());
@@ -258,5 +271,85 @@ public class SkillServiceImplementation implements SkillService{
 			upgradedPercentage = currentPercentage + increment; 
 		}
 		return upgradedPercentage;
+	}
+
+
+	public List<SkillUpgrades> determineSkillUpgradesForTasksInDone(List<Task> tasksInDone) {
+		List<SkillUpgrades> skillUpgradesForTasksInDone = new ArrayList<SkillUpgrades>();
+
+		SkillUpgrades skillUpgrades;
+		for (int i = 0; i < tasksInDone.size(); i++) {
+			skillUpgrades = suggestSkillsUpgradeForDeveloper(tasksInDone.get(i));
+			skillUpgradesForTasksInDone.add(skillUpgrades);
+		}
+		return skillUpgradesForTasksInDone;
+	}
+
+
+	public void addSkillForDeveloper(Developer selectedDeveloper, SkillItem selectedSkillItem) {
+		int selectedDeveloperId = selectedDeveloper.getId();
+		float percentage = selectedSkillItem.getPercentage();
+		selectedSkillItem = skillItemService.findById(selectedSkillItem.getId());
+		selectedSkillItem.setPercentage(percentage);
+		String selectedSkillItemName = selectedSkillItem.getSkillName();
+
+		Skill foundedSkill = findByNameAndDeveloper(selectedSkillItemName, selectedDeveloperId);
+		if (foundedSkill != null) {
+			if (percentage >= foundedSkill.getPercentage()) {
+				foundedSkill.setPercentage(percentage);
+				update(foundedSkill);
+			}
+		} else {
+			Skill newSkill = new Skill();
+			List<Skill> existentSkills = findAll();
+			if (existentSkills.size() > 0) {
+				Skill lastInsertedSkill = existentSkills.get(existentSkills.size() - 1);
+				newSkill.setId(lastInsertedSkill.getId() + 1);
+			} else {
+				newSkill.setId(1);
+			}
+			newSkill.setSkillName(selectedSkillItemName);
+			newSkill.setPercentage(percentage);
+			newSkill.setDeveloper(selectedDeveloper);
+			create(newSkill);
+		}
+	}
+
+
+	public void upgradeSkillForDeveloper(Task task, MetaTag metaTag) {
+		Developer developer = task.getDeveloper();
+		int developerId = developer.getId();
+		String metaTagName = metaTag.getMetaTagName();
+
+		Skill skill = findByNameAndDeveloper(metaTagName, developerId);
+		if (skill == null) {
+			skill = new Skill();
+			List<Skill> existentSkills = findAll();
+			if (existentSkills.size() > 0) {
+				Skill lastInsertedSkill = existentSkills.get(existentSkills.size() - 1);
+				skill.setId(lastInsertedSkill.getId() + 1);
+			} else {
+				skill.setId(1);
+			}
+			skill.setSkillName(metaTagName);
+			skill.setPercentage(0);
+			skill.setDeveloper(developer);
+			create(skill);
+		}
+
+		SkillUpgrades skillUpgradesForSelectedTask = suggestSkillsUpgradeForDeveloper(task);
+		float upgradedPercentage = skillUpgradesForSelectedTask.getUpgrades().get(metaTagName).getUpgradedPercentage();
+		skill.setPercentage(upgradedPercentage);
+		update(skill);
+
+		List<Task> tasksInDone = taskService.findAllFromPanel("in done");
+		for (int i = 0; i < tasksInDone.size(); i++) {
+			if (tasksInDone.get(i).getDeveloper().getId() == developerId) {
+				if (metaTagService.findByNameAndTask(metaTagName, tasksInDone.get(i).getId()) != null) {
+					metaTag = metaTagService.findByNameAndTask(metaTagName, tasksInDone.get(i).getId());
+					metaTagService.delete(metaTag.getId());
+				}
+			}
+		}
 	}
 }
