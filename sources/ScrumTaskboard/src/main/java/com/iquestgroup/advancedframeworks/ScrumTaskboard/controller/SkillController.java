@@ -78,29 +78,31 @@ public class SkillController {
 	@RequestMapping(value = "/addSkillSelectSkill", method = RequestMethod.POST)
 	public String processAddSkillSelectSkill(@ModelAttribute("selectedSkillItem") SkillItem selectedSkillItem ,BindingResult result, Map<String, List<?>> model) {
 		Developer selectedDeveloper = (Developer) model.get("selectedDeveloper");
+		int selectedDeveloperId = selectedDeveloper.getId();
+		
 		selectedSkillItem = (SkillItem) model.get("selectedSkillItem");
 		float percentage = selectedSkillItem.getPercentage();
-		
 		selectedSkillItem = skillItemService.findById(selectedSkillItem.getId());
 		selectedSkillItem.setPercentage(percentage);
+		String selectedSkillItemName = selectedSkillItem.getSkillName();
 		
-		if(skillService.findByNameAndDeveloper(selectedSkillItem.getSkillName(), selectedDeveloper.getId()) != null){
-			Skill foundedSkill = skillService.findByNameAndDeveloper(selectedSkillItem.getSkillName(), selectedDeveloper.getId());
-			if(selectedSkillItem.getPercentage() >= foundedSkill.getPercentage()) {
-				foundedSkill.setPercentage(selectedSkillItem.getPercentage());
+		if (skillService.findByNameAndDeveloper(selectedSkillItemName, selectedDeveloperId) != null) {
+			Skill foundedSkill = skillService.findByNameAndDeveloper(selectedSkillItemName, selectedDeveloperId);
+			if (percentage >= foundedSkill.getPercentage()) {
+				foundedSkill.setPercentage(percentage);
 				skillService.update(foundedSkill);
 			}
-		}
-		else {
+		} else {
 			Skill newSkill = new Skill();
 			List<Skill> existentSkills = skillService.findAll();
-			if(existentSkills.size()>0) {
-			Skill lastInsertedSkill = existentSkills.get(existentSkills.size()-1);
-			newSkill.setId(lastInsertedSkill.getId()+1);
+			if (existentSkills.size() > 0) {
+				Skill lastInsertedSkill = existentSkills.get(existentSkills.size() - 1);
+				newSkill.setId(lastInsertedSkill.getId() + 1);
+			} else {
+				newSkill.setId(1);
 			}
-			else newSkill.setId(1);
-			newSkill.setSkillName(selectedSkillItem.getSkillName());
-			newSkill.setPercentage(selectedSkillItem.getPercentage());
+			newSkill.setSkillName(selectedSkillItemName);
+			newSkill.setPercentage(percentage);
 			newSkill.setDeveloper(selectedDeveloper);
 			skillService.create(newSkill);
 		}
@@ -111,7 +113,7 @@ public class SkillController {
 	
 	
 	@RequestMapping(value = "/showSkillUpgrades", method = RequestMethod.GET)
-	public String showFormShowSkillUpgrades(Map<String, List<SkillUpgrades>> model) {
+	public String showFormShowSkillUpgrades(Map<String, Object> model) {
 		List<SkillUpgrades> skillUpgradesForTasksInDone = new ArrayList<SkillUpgrades>();
 		List<Task> tasksInDone = taskService.findAllFromPanel("in done");
 		
@@ -120,6 +122,7 @@ public class SkillController {
 			skillUpgradesForTasksInDone.add(skillUpgrades);
 		}
 		model.put("skillUpgradesForTasksInDone", skillUpgradesForTasksInDone);
+		model.put("tasksInDone", tasksInDone);
 		
 		return "showSkillUpgrades";
 	}
@@ -142,7 +145,6 @@ public class SkillController {
 			skillUpgradesForTasksInDone.add(skillUpgrades);
 		}
 		model.put("skillUpgradesForTasksInDone", skillUpgradesForTasksInDone);
-		
 		model.put("tasksInDone", tasksInDone);
 		
 		Task task = new Task();
@@ -186,13 +188,15 @@ public class SkillController {
 	public String processUpgradeSkillSelectSkill(@ModelAttribute("metaTag") MetaTag metaTag, BindingResult result,Map<String, List<SkillUpgrades>> model) {
 		Task task = (Task) model.get("task");
 		task = taskService.findById(task.getId());
-		
+		Developer developer = task.getDeveloper();
+		int developerId = developer.getId();
 		metaTag = (MetaTag) model.get("metaTag");
 		metaTag = metaTagService.findById(metaTag.getId());
+		String metaTagName = metaTag.getMetaTagName();
 		
 		Skill skill;
-		if(skillService.findByNameAndDeveloper(metaTag.getMetaTagName(), task.getDeveloper().getId()) != null) {
-			skill = skillService.findByNameAndDeveloper(metaTag.getMetaTagName(), task.getDeveloper().getId());
+		if(skillService.findByNameAndDeveloper(metaTagName, developerId) != null) {
+			skill = skillService.findByNameAndDeveloper(metaTagName, developerId);
 		}
 		else{
 			skill = new Skill();
@@ -203,14 +207,14 @@ public class SkillController {
 			}
 			
 			else skill.setId(1);
-			skill.setSkillName(metaTag.getMetaTagName());
+			skill.setSkillName(metaTagName);
 			skill.setPercentage(0);
-			skill.setDeveloper(task.getDeveloper());
+			skill.setDeveloper(developer);
 			skillService.create(skill);
 		}
 		
 		SkillUpgrades skillUpgradesForSelectedTask = skillService.suggestSkillsUpgradeForDeveloper(task);
-		float upgradedPercentage = skillUpgradesForSelectedTask.getUpgrades().get(skill.getSkillName()).getUpgradedPercentage();
+		float upgradedPercentage = skillUpgradesForSelectedTask.getUpgrades().get(metaTagName).getUpgradedPercentage();
 		skill.setPercentage(upgradedPercentage);
 		skillService.update(skill);
 		
@@ -218,9 +222,9 @@ public class SkillController {
 		List<Task> tasksInDone = taskService.findAllFromPanel("in done");
 	    
 		for(int i=0;i<tasksInDone.size();i++) {
-			if(tasksInDone.get(i).getDeveloper().getId() == task.getDeveloper().getId()) {
-				if(metaTagService.findByNameAndTask(skill.getSkillName(), tasksInDone.get(i).getId()) != null) {
-				    metaTag = metaTagService.findByNameAndTask(skill.getSkillName(), tasksInDone.get(i).getId());
+			if(tasksInDone.get(i).getDeveloper().getId() == developerId) {
+				if(metaTagService.findByNameAndTask(metaTagName, tasksInDone.get(i).getId()) != null) {
+				    metaTag = metaTagService.findByNameAndTask(metaTagName, tasksInDone.get(i).getId());
 				    metaTagService.delete(metaTag.getId());
 				}
 			}
