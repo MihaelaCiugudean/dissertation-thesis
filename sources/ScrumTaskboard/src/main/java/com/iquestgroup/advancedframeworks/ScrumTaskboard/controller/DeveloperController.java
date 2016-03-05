@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.iquestgroup.advancedframeworks.ScrumTaskboard.domain.Developer;
 import com.iquestgroup.advancedframeworks.ScrumTaskboard.domain.User;
-import com.iquestgroup.advancedframeworks.ScrumTaskboard.service.TaskService;
 import com.iquestgroup.advancedframeworks.ScrumTaskboard.service.UserService;
 import com.iquestgroup.advancedframeworks.ScrumTaskboard.service.impl.DeveloperServiceImplementation;
 
@@ -23,8 +22,6 @@ public class DeveloperController {
 	@Autowired
 	private DeveloperServiceImplementation developerServiceImplementation;
 	
-	@Autowired
-	private TaskService taskService;
 	
 	@Autowired
 	private UserService userService;
@@ -57,12 +54,9 @@ public class DeveloperController {
 				userService.create(newUser);
 				newDeveloper.setUser(newUser);
 			}
-			
 			developerServiceImplementation.create(newDeveloper);
 		}
-		
 		model.put("developers", developerServiceImplementation.findAll());
-
 		return "showDevelopers";
 	}
 	
@@ -79,9 +73,7 @@ public class DeveloperController {
 	@RequestMapping(value = "/deleteDeveloper", method = RequestMethod.POST)
 	public String processDelete(@ModelAttribute("developerToDelete") Developer developerToDelete,BindingResult result, Map<String, List<Developer>> model) {
 		developerToDelete = (Developer) model.get("developerToDelete");
-		
 		developerServiceImplementation.delete(developerToDelete.getId());
-		
 		model.put("developers", developerServiceImplementation.findAll());
 
 		return "showDevelopers";
