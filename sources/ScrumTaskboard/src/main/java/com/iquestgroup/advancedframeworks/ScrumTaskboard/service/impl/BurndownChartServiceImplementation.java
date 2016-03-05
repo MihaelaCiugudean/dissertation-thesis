@@ -209,7 +209,7 @@ public class BurndownChartServiceImplementation implements BurndownChartService{
 		XYPlot plot = (XYPlot) chart.getPlot();
 		plot.setDomainAxis(xAxis);
 	       
-		ChartUtilities.saveChartAsPNG(new File("D:/SpringToolSuite/vfabric-tc-server-developer-2.9.3.RELEASE/base-instance/wtpwebapps/ScrumTaskboard/img/burndownChart.png"), chart, 400, 400);
+		ChartUtilities.saveChartAsPNG(new File("C:/Program Files/spring-tool-suite-3.7.2.RELEASE-e4.5.1-win32-x86_64/sts-bundle/pivotal-tc-server-developer-3.1.2.RELEASE/tcServer/wtpwebapps/ScrumTaskboard/img/burndownChart.png"), chart, 400, 400);
 	}
 	
 	public String obtainBurndownChartDescription(BurndownChart burndownChart) {
