@@ -1,4 +1,3 @@
-<%@page import="com.iquestgroup.advancedframeworks.ScrumTaskboard.service.impl.DeveloperServiceImplementation"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ page session="true"%>
@@ -8,7 +7,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@page import="com.iquestgroup.advancedframeworks.ScrumTaskboard.domain.*" %>
 <%@page import="com.iquestgroup.advancedframeworks.ScrumTaskboard.service.*" %>
-<%@page import="java.util.Calendar;" %>
+<%@page import="com.iquestgroup.advancedframeworks.ScrumTaskboard.service.impl.DeveloperServiceImplementation"%>
+<%@page import="java.util.Calendar" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -46,7 +46,7 @@
 				<thead>
 					<tr height="1" bgcolor="grey">
 						<th>Developer Name</th>
-						<th> Monday <td>1</td> <td>2</td> <td>3</td> <td>4</td> <td>5</td> <td>6</td> <td>7</td> <td>8</td> </th>
+						<th> Monday <td>1</td> <td>2</td> <td>3</td> <td>4</td> <td>5</td> <td>6</td> <td>7</td> <td>8</td> </th> 
 						<th>Tuesday <td>1</td> <td>2</td> <td>3</td> <td>4</td> <td>5</td> <td>6</td> <td>7</td> <td>8</td> </th>
 						<th>Wednesday <td>1</td> <td>2</td> <td>3</td> <td>4</td> <td>5</td> <td>6</td> <td>7</td> <td>8</td> </th>
 						<th>Thursday <td>1</td> <td>2</td> <td>3</td> <td>4</td> <td>5</td> <td>6</td> <td>7</td> <td>8</td> </th>
@@ -377,7 +377,7 @@
 						          <hr color="red">
 							 <% } %>
 							</td>
-								<td>
+							<td>
 							 <%  if(!developerServiceImplementation.isDeveloperBusy(firstName, lastName, "Friday", 7)) { %>
 								  <hr color="green">
 						     <%  }
@@ -385,7 +385,7 @@
 						          <hr color="red">
 							 <% } %>
 							</td>
-								<td>
+							<td>
 							 <%  if(!developerServiceImplementation.isDeveloperBusy(firstName, lastName, "Friday", 8)) { %>
 								  <hr color="green">
 						     <%  }

@@ -84,4 +84,12 @@ public interface DeveloperService {
 	 * 		   to false in case he/she is free.
 	 */
 	boolean isDeveloperBusy(String developerFirstName, String developerLastName, String day, int hour);
+	
+	/**
+	 * Method which performs all operations involved in the process of adding a new developer.
+	 * 
+	 * @param newDeveloper
+	 *            - The new developer to be created.
+	 */
+	void processAddDeveloper(Developer newDeveloper);
 }
