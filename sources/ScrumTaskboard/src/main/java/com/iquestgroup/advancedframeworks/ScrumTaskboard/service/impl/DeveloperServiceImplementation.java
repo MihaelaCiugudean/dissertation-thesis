@@ -11,9 +11,11 @@ import org.springframework.stereotype.Service;
 
 import com.iquestgroup.advancedframeworks.ScrumTaskboard.domain.Developer;
 import com.iquestgroup.advancedframeworks.ScrumTaskboard.domain.Task;
+import com.iquestgroup.advancedframeworks.ScrumTaskboard.domain.User;
 import com.iquestgroup.advancedframeworks.ScrumTaskboard.persistence.DeveloperDao;
 import com.iquestgroup.advancedframeworks.ScrumTaskboard.persistence.TaskDao;
 import com.iquestgroup.advancedframeworks.ScrumTaskboard.service.DeveloperService;
+import com.iquestgroup.advancedframeworks.ScrumTaskboard.service.UserService;
 
 @Service("developerService")
 public class DeveloperServiceImplementation implements DeveloperService {
@@ -22,6 +24,9 @@ public class DeveloperServiceImplementation implements DeveloperService {
 	
 	@Autowired
 	private TaskDao taskDao;
+	
+	@Autowired
+	private UserService userService;
 	
 	private Logger logger = Logger.getLogger(DeveloperServiceImplementation.class.getName());
 	
@@ -77,7 +82,6 @@ public class DeveloperServiceImplementation implements DeveloperService {
 	}
 	
 
-	
 	public void update(Developer developer) {
 		try {
 			developerDao.update(developer);
@@ -99,25 +103,27 @@ public class DeveloperServiceImplementation implements DeveloperService {
 	
 
 	public String obtainTeamInformation() {
-		int juniorNumber = 0, seniorNumber = 0, projectManagerNumber = 0;
+		int developersNumber= 0, juniorNumber = 0, seniorNumber = 0, projectManagerNumber = 0;
 		List<Developer> developers = new ArrayList<Developer>() ;
 		try {
 			developers = developerDao.findAll();
-			for(int i=0;i<developers.size();i++) {
-				if(developers.get(i).getLevel().equals("junior")) {
+			developersNumber = developers.size();
+			for (int i = 0; i < developersNumber; i++) {
+				String developerLevel = developers.get(i).getLevel();
+				if (developerLevel.equals("junior")) {
 					juniorNumber++;
-				}
-				else if(developers.get(i).getLevel().equals("senior")) {
+				} else if (developerLevel.equals("senior")) {
 					seniorNumber++;
+				} else {
+					projectManagerNumber++;
 				}
-				else projectManagerNumber++;
 			}
 		} catch (SQLException e) {
 			logger.warn("Unable to retrieve all developers' levels from the database!");
 			e.printStackTrace();
 		}
 		
-		return "The team currently working on this Sprint is composed of "+ developers.size()+ 
+		return "The team currently working on this Sprint is composed of "+ developersNumber+ 
 				" developers. Depending on the working experience period and individual realizations, they "+
 		        " are divided into three categories representing each developer's level: Junior Software "+
 				" Developers, Senior Software Developers and Project Managers. Consequently, this team "+
@@ -155,9 +161,10 @@ public class DeveloperServiceImplementation implements DeveloperService {
 		List<Task> tasksTaken = new ArrayList<Task>(), tasksInProgress = new ArrayList<Task>();
 		try {
 			Developer developer = developerDao.findByName(developerFirstName, developerLastName);
+			int developerId = developer.getId();
 		
-			tasksTaken = taskDao.findAllFromPanelForDeveloper("taken", developer.getId());
-			tasksInProgress = taskDao.findAllFromPanelForDeveloper("in progress", developer.getId());
+			tasksTaken = taskDao.findAllFromPanelForDeveloper("taken", developerId);
+			tasksInProgress = taskDao.findAllFromPanelForDeveloper("in progress", developerId);
 		} catch (SQLException e) {
 			logger.warn("Unable to retrieve the developer and its corresponding tasks from the specified panels!");
 			e.printStackTrace();
@@ -167,11 +174,22 @@ public class DeveloperServiceImplementation implements DeveloperService {
 		allTasks.addAll(tasksInProgress);
 		
 		int workingHours = 0;
-		
 		for(int i=0;i<allTasks.size();i++) {
 			workingHours += allTasks.get(i).getNrHours();
 		}
-		
 		return workingHours;
+	}
+
+
+	public void processAddDeveloper(Developer newDeveloper) {
+		if (newDeveloper.getFirstName() != "" && newDeveloper.getLastName() != "" && newDeveloper.getLevel() != "") {
+			List<User> existentUsers = userService.findAll();
+			if (existentUsers.size() > 0) {
+				User newUser = new User();
+				userService.create(newUser);
+				newDeveloper.setUser(newUser);
+			}
+			create(newDeveloper);
+		}
 	}
 }
