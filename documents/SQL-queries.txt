@@ -1,0 +1,17 @@
+EXPLAIN EXTENDED SELECT *  FROM Developer;
+EXPLAIN EXTENDED SELECT * from Task t where t.status like 'not-taken';
+
+EXPLAIN EXTENDED SELECT * FROM Developer d WHERE d.firstName = 'miha' and d.lastName = 'man';
+
+
+
+
+
+
+- in C:\Windows\System32\cmd.exe pt a face enable la logging:
+
+SHOW VARIABLES LIKE '%log%';
+SET GLOBAL general_log='ON';
+SET GLOBAL log_queries_not_using_indexes='ON';
+SET GLOBAL log_slow_admin_statements='ON';
+SET GLOBAL log_slow_slave_statements='ON';

@@ -15,6 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Index;
+
 @Entity
 @Table(name="developer")
 public class Developer {
@@ -25,9 +27,11 @@ public class Developer {
 	private int id;
 	
 	@Column(name="firstName")
+	@Index(name = "firstNameIDX")
 	private String firstName;
 	
 	@Column(name="lastName")
+	@Index(name = "lastNameIDX")
 	private String lastName;
 
 	@OneToMany(mappedBy="developer",fetch=FetchType.LAZY, cascade=CascadeType.ALL)

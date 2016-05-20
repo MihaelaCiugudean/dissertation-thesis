@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
@@ -22,10 +23,12 @@ public class User {
 	
 	@NotEmpty
 	@Column(name="username")
+	@Index(name = "usernameIDX")
 	private String username;
 	
 	@NotEmpty
 	@Column(name="password")
+	@Index(name = "passwordIDX")
 	private String password;
 
 	@Column(name="position")

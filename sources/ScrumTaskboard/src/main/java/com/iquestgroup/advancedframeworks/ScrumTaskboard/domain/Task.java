@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Index;
+
 @Entity
 @Table(name="task")
 public class Task {
@@ -34,6 +36,7 @@ public class Task {
 	private Developer developer;
 	
 	@Column(name="status")
+	@Index(name = "statusIDX")
 	private String status;
 	
 	@Column(name="nrHours")

@@ -10,7 +10,7 @@ http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
-			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.hbm2ddl.auto" value="create" />
 		</properties>
 
 	</persistence-unit>
