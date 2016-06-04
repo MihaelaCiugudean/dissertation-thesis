@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.iquestgroup.advancedframeworks.ScrumTaskboard.domain.User;
-import com.iquestgroup.advancedframeworks.ScrumTaskboard.persistence.DeveloperDao;
 import com.iquestgroup.advancedframeworks.ScrumTaskboard.persistence.UserDao;
 import com.iquestgroup.advancedframeworks.ScrumTaskboard.service.UserService;
 
@@ -17,9 +16,6 @@ import com.iquestgroup.advancedframeworks.ScrumTaskboard.service.UserService;
 public class UserServiceImplementation implements UserService {
 
 	private UserDao userDao;
-	
-	@Autowired
-	private DeveloperDao developerDao;
 	
 	private Logger logger = Logger.getLogger(UserServiceImplementation.class.getName());
 	

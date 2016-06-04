@@ -59,7 +59,7 @@ public class JpaDeveloperDao implements DeveloperDao{
 	
 	
 	public void create(Developer developer) throws SQLException {
-		entityManager.persist(developer);
+		entityManager.merge(developer);
 	}
 
 	

@@ -41,7 +41,7 @@ public class Developer {
 	@JoinColumn(name="departmentId")
 	private Department department;
 	
-	@ManyToOne()
+	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="userId")
 	private User user;
 	

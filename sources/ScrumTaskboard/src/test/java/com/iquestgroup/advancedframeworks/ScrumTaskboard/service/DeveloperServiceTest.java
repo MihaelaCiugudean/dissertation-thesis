@@ -17,7 +17,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.iquestgroup.advancedframeworks.ScrumTaskboard.domain.Department;
 import com.iquestgroup.advancedframeworks.ScrumTaskboard.domain.Developer;
 import com.iquestgroup.advancedframeworks.ScrumTaskboard.persistence.DeveloperDao;
-import com.iquestgroup.advancedframeworks.ScrumTaskboard.service.impl.DeveloperServiceImplementation;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"file:src/main/resources/spring/application-config.xml"})  
@@ -37,7 +36,6 @@ public class DeveloperServiceTest {
 	@Before
 	public void setUp() {
 		developerDao = Mockito.mock(DeveloperDao.class);
-		developerService = new DeveloperServiceImplementation(developerDao);
 		department = new Department("Java Solutions", "Ioana Man");
 		developer = new Developer("Ioana", "Zamfir");
 		developer.setDepartment(department);	
