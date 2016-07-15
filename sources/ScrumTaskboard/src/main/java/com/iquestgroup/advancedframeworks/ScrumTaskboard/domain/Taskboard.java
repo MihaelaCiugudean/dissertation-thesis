@@ -21,7 +21,6 @@ public class Taskboard {
 	@Id
 	@GeneratedValue
 	@Column(name="taskboardId")
-	@OneToOne(fetch=FetchType.LAZY, mappedBy="taskboard")
 	private int id;
 
 	@OneToOne()

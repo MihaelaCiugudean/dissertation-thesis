@@ -9,7 +9,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -19,7 +18,6 @@ public class BurndownChart {
 	@Id
 	@GeneratedValue
 	@Column(name="burndownChartId")
-	@OneToOne(fetch=FetchType.LAZY, mappedBy="burndownChart")
 	private int id;
 	
 	@Column(name="storyPointsNr")

@@ -2,10 +2,8 @@ package com.iquestgroup.advancedframeworks.ScrumTaskboard.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -15,7 +13,6 @@ public class Department {
 	@Id
 	@GeneratedValue
 	@Column(name="departmentId")
-	@OneToOne(fetch=FetchType.EAGER, mappedBy="department")
 	private int id;
 	
 	@Column(name="departmentName")
