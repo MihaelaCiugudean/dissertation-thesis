@@ -28,8 +28,5 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Mihaela/Downloads/aspectjweaver-1.7.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Mihaela/Downloads/commons-dbcp-1.4.jar"/>
-	<classpathentry kind="lib" path="C:/mysql-connector-java-5.1.20/mysql-connector-java-5.1.20/mysql-connector-java-5.1.20-bin.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
