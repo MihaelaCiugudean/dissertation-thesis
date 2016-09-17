@@ -16,9 +16,12 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name="developer")
+@Cache(usage=CacheConcurrencyStrategy.READ_ONLY, region="developer")
 public class Developer {
 	
 	@Id

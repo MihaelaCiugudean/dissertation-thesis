@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.iquestgroup.advancedframeworks.ScrumTaskboard.domain.Developer;
@@ -16,6 +17,9 @@ import com.iquestgroup.advancedframeworks.ScrumTaskboard.persistence.DeveloperDa
 import com.iquestgroup.advancedframeworks.ScrumTaskboard.persistence.TaskDao;
 import com.iquestgroup.advancedframeworks.ScrumTaskboard.service.DeveloperService;
 import com.iquestgroup.advancedframeworks.ScrumTaskboard.service.UserService;
+
+/*import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Ehcache;*/
 
 @Service("developerService")
 public class DeveloperServiceImplementation implements DeveloperService {
@@ -30,12 +34,10 @@ public class DeveloperServiceImplementation implements DeveloperService {
 	
 	private Logger logger = Logger.getLogger(DeveloperServiceImplementation.class.getName());
 	
-	@Autowired
-	public DeveloperServiceImplementation(DeveloperDao developerDao) {
-		this.developerDao = developerDao;
-	}
+//	private static final String FIND_ALL_DEVELOPERS_CACHE_NAME = "findAllDevelopersCache";
 	
 	
+//	@Cacheable(FIND_ALL_DEVELOPERS_CACHE_NAME)
 	public List<Developer> findAll() {
 		ArrayList<Developer> developers = new ArrayList<Developer>();
 		try {
@@ -95,6 +97,7 @@ public class DeveloperServiceImplementation implements DeveloperService {
 	public void delete(int developerId) {
 		try {
 			developerDao.delete(developerId);
+//			invalidateCache(FIND_ALL_DEVELOPERS_CACHE_NAME);
 		} catch (SQLException e) {
 			logger.warn("The developer with the specified id can not be deleted!", e);
 			e.printStackTrace();
@@ -190,6 +193,14 @@ public class DeveloperServiceImplementation implements DeveloperService {
 				newDeveloper.setUser(newUser);
 			}
 			create(newDeveloper);
+//			invalidateCache(FIND_ALL_DEVELOPERS_CACHE_NAME);
 		}
 	}
+
+	
+	/*private void invalidateCache(String cacheToClear) {
+		CacheManager cacheManager = CacheManager.create();
+		Ehcache ehcache = cacheManager.getEhcache(cacheToClear);
+		ehcache.removeAll();
+	}*/
 }

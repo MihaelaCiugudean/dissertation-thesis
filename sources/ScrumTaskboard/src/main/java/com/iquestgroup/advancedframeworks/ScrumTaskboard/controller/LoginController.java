@@ -17,7 +17,7 @@ import com.iquestgroup.advancedframeworks.ScrumTaskboard.service.DeveloperServic
 import com.iquestgroup.advancedframeworks.ScrumTaskboard.service.UserService;
 
 @Controller
-@SessionAttributes({"loginForm","registerForm"})
+@SessionAttributes({"loginForm", "registerForm"})
 public class LoginController {
 
 	@Autowired
@@ -36,7 +36,7 @@ public class LoginController {
     
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String processLogin(@ModelAttribute("loginForm") User loginForm,BindingResult result, Map<String, Object> model) {
-		loginForm = (User) model.get("loginForm");
+//		loginForm = (User) model.get("loginForm");
 
 		User foundUser = userService.findByUsernameAndPassword(loginForm.getUsername(), loginForm.getPassword());
 
@@ -44,7 +44,7 @@ public class LoginController {
 			return "login";
 		}
 
-		model.put("loginForm", loginForm);
+//		model.put("loginForm", loginForm);
 
 		if (foundUser.getPosition().equals("developer")) {
 			return "loginDeveloper";

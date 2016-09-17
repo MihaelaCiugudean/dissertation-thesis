@@ -22,14 +22,15 @@ public class JpaDeveloperDao implements DeveloperDao{
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	
 	public List<Developer> findAll() throws SQLException {
-		 Query query = entityManager.createQuery("select d from Developer d");
-	     List<Developer> resultList = query.getResultList();
-	     if(resultList.size() >0) return resultList;
-	     return null;
+		Query query = entityManager.createQuery("select d from Developer d")
+				.setHint("org.hibernate.cacheable", true)
+				.setHint("org.hibernate.cacheRegion", "developer");
+		List<Developer> resultList = query.getResultList();
+		if (resultList.size() > 0)
+			return resultList;
+		return null;
 	}
-	
 	
 	public Developer findById(int developerId)
 			throws SQLException {
