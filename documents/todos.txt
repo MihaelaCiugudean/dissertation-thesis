@@ -1,0 +1,47 @@
+- JMeter: write test cases (for application flows) in order to automate users access of the website
+- VisualVM: monitor test cases => how many concurrent users supports ?
+
+- Perform Code optimizations and other improvements in the application so that to increase the number of concurrent users
+- Late improvement to be performed: add a load balancing mechanism 
+- Evaluate how many concurrent users the application supports after these improvements ?
+
+- GitHub :
+  -> Username: MihaelaCiugudean
+  -> Password: dizertatie10
+  
+  -> Toate code changes sunt up-to-date pe branch-ul master (last push to remote repo: 17.09.2016).
+  
+  
+- Next steps: 
+  -> de imbunatatit cunostiintele de JMeter si VisualVM legat de ce capabilitati ofera si de inteles parametrii si interpretarea rezultatelor obtinute
+  
+  -> Caching:
+		- Spring eh-cache + Hibernate eh-cache 
+		- study and document comparison between Spring & Hibernate cache
+		
+		- implement caching using Spring eh-cache for a service method (from Service layer) and test the performance obtained:
+		
+		     Steps for testing the performance obtained after adding cache using Spring eh-cache: 
+			 -> am creat un use case scenario pt a testa performanta adusa de adaugarea caching-ului in 
+			    D:\School\Master\dissertation-thesis\experiments\JMeter-ScrumTaskboard testcases-After Adding Caching\Visualize Developers testcases\100 threads
+			 => 1) comentez codul unde am adaugat caching (ramane varianta After Adding Indexing) si apoi execut use case-ul (din JMeter & VisualVM cu 
+			       100/300/500 thread-uri) si salvez rezultatele obtinute
+			 => 2) adaug caching in applicatie si apoi execut din nou use case-ul (din JMeter & VisualVM cu 100/300/500 thread-uri) si salvez noile rezultatele 
+			       obtinute
+			 => 3) compar rezultatele obtinute inainte si dupa adaugarea cache-ului si trag concluzii 
+			  
+			 - de rezolvat erorile de ProxyError inainte de adaugarea cache-ului 
+				-> pot fi cauzate de Apache: de verificat parametrii de timeout, keepalive, etc. din:
+     			 - httpd.conf si alte fisiere de configurare din Apache  ( de citit despre parametrii si configurari: https://httpd.apache.org/docs/2.4/mod/core.html )
+				 - server.xml din Tomcat ( <Connector acceptCount="100" connectionTimeout="20000".....   de pus la connectorul de HTTP 200000, poate de scos cel de AJP)
+			 
+			 - am rezolvat erorile de ProxyError + cele de OutOfMemory (din JMeter)
+			 - totusi, testplan-ul ruleaza mult (~3h pt 100 thread-uri), insa configurarile facute nu par sa reduca acest timp de executie
+			
+	    NEXT:		 
+		- implement caching using Hibernate eh-cache for a Java entity class (from Model layer) and test the performance obtained
+		- implement caching using both Spring eh-cache and Hibernate eh-cache and test the performance obtained
+		
+		
+  -> Add load balancing mechanism
+
